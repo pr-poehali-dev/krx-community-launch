@@ -1,9 +1,22 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
+import ProjectModal from "@/components/ProjectModal";
+import UserProfileModal from "@/components/UserProfileModal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState("all");
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const categories = [
     { id: "all", name: "Все проекты" },
@@ -142,9 +155,35 @@ const Index = () => {
               Обновление до PRO
             </Button>
 
-            <Button className="rounded-none bg-blue-500 hover:bg-blue-600">
-              Войти
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="w-8 h-8 cursor-pointer">
+                  <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face" />
+                  <AvatarFallback>AA</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-gray-800 border-gray-700 text-white">
+                <DropdownMenuItem
+                  onClick={() => setShowProfileModal(true)}
+                  className="hover:bg-gray-700"
+                >
+                  <Icon name="User" className="mr-2" size={16} />
+                  Мой профиль
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-gray-700">
+                  <Icon name="Settings" className="mr-2" size={16} />
+                  Настройки
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-gray-700">
+                  <Icon name="Upload" className="mr-2" size={16} />
+                  Загрузить работу
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-gray-700">
+                  <Icon name="LogOut" className="mr-2" size={16} />
+                  Выйти
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <div className="flex items-center gap-2">
               <Icon
@@ -295,6 +334,17 @@ const Index = () => {
           <p className="mt-2">Платформа для творческих профессионалов</p>
         </div>
       </footer>
+
+      <ProjectModal
+        project={selectedProject}
+        isOpen={showProjectModal}
+        onClose={() => setShowProjectModal(false)}
+      />
+
+      <UserProfileModal
+        isOpen={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+      />
     </div>
   );
 };
